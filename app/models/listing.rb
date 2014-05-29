@@ -8,6 +8,9 @@ class Listing < ActiveRecord::Base
         :path => ":style/:id_:filename"
   end
    validates_attachment_content_type :image, :content_type => %w(image/jpeg image/jpg image/png)
+   validates :name, :description, :price, presence: true 
+
+   belongs_to :user #We do this because a listing belogs to a single user
 end
 
 #validates_attachment_content_type :image, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
