@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
 
-  has_many :listings , dependent: :destroy
+  has_many :listings, dependent: :destroy
   #has_many, 1 user can have x listings. But listings can have only 1 User, so listingsmodel belong_to :Users
   #:Destroy:If a user is destroyed, his listings will be too.
 
