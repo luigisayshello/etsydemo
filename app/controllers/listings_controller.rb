@@ -5,6 +5,7 @@ class ListingsController < ApplicationController
   # GET /listings.json
   def index
     @listings = Listing.all
+    @listing.user_id = current_user.id
   end
 
   # GET /listings/1
