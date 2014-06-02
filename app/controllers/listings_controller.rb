@@ -1,5 +1,10 @@
 class ListingsController < ApplicationController
   before_action :set_listing, only: [:show, :edit, :update, :destroy]
+  # just " before_action :authenticate_user!" = requires login just to see the page.
+  # The rest says that you only need to sign whe you try to do the things inside the [].
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy] 
+  # This line impedes that a user edit update or destroy others listings VERY USEFUL.
+  before_filter :check_user, only: [:edit, :update, :destroy]
 
   # GET /listings
   # GET /listings.json
@@ -72,4 +77,11 @@ class ListingsController < ApplicationController
     def listing_params
       params.require(:listing).permit(:name, :description, :price, :image)
     end
+    # Checks if the user who is logged in is the same person that create the listing 
+    # != not equal
+    def check_user
+      if current_user != @listing.user
+        redirect_to root_url, alert: "Sorry, this listing belongs to someone else"
+      end
+   end
 end

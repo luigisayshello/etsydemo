@@ -16,7 +16,9 @@
       <ul class="nav navbar-nav">
         <!-- Link html way (only Contact)-->
         <!-- Links rails way link_to "link name" ROUTE - ROUTE come from "rake routes" - PREFIX ; destroy something always means more code (sign out).-->
-        <li><a href="/listings/new">New Listing</a></li>
+        <% if user_signed_in? %>       
+          <li><a href="/listings/new">New Listing</a></li>
+        <% end %>
         <li><a href="/pages/contact">Contact</a></li>
         <li><%= link_to "About", pages_about_path %></li>
       </ul>
