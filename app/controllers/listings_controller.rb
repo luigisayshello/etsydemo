@@ -1,15 +1,22 @@
 class ListingsController < ApplicationController
   before_action :set_listing, only: [:show, :edit, :update, :destroy]
+  #chptr_8.2 Devise keyword :authenticate_user! which checks to make sure a user is signed in
   # just " before_action :authenticate_user!" = requires login just to see the page.
   # The rest says that you only need to sign whe you try to do the things inside the [].
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy] 
+  before_action :authenticate_user!, only: [:seller, :new, :create, :edit, :update, :destroy] 
   # This line impedes that a user edit update or destroy others listings VERY USEFUL.
-  before_filter :check_user, only: [:edit, :update, :destroy]
+  # only: [:edit, :update, :destroy] specify when Rails needs to check when a user is signed in
+  before_action :check_user, only: [:edit, :update, :destroy]
 
   # GET /listings
   # GET /listings.json
+
+  def seller
+    @listings = Listing.where(user: current_user).order("created_at DESC")
+  end
+
   def index
-    @listings = Listing.all
+    @listings = Listing.all.order("created_at DESC")
   end
 
   # GET /listings/1
@@ -77,7 +84,7 @@ class ListingsController < ApplicationController
     def listing_params
       params.require(:listing).permit(:name, :description, :price, :image)
     end
-    # Checks if the user who is logged in is the same person that create the listing 
+    # This function checks to see if the current user who is logged in is the same person who created the listing in question
     # != not equal
     def check_user
       if current_user != @listing.user
